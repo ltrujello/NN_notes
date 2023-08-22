@@ -1,0 +1,188 @@
+%%%%%%%%%%%%%%%%%%%%%%%% Theorem Environment %%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{thm}[1][]{%
+  %\ifhmcpset@boxed\def\hmcpset@probenv{boxed}\else\def\hmcpset@probenv{}\fi%
+  \bigskip% put space before problem statement box %
+  \noindent 
+
+  \begin{tcolorbox}[sharp corners, colback=NavyBlue!2,colframe=blue!70!black!70]% 
+    \refstepcounter{theorem}\par\medskip
+   \textbf{Theorem \thetheorem. \hspace{-2mm}#1} \rmfamily
+  \def\@tempa{#1}%
+  \ifx\@tempa\empty\else%
+    \hspace{0.5em}%
+  \fi%
+}{%
+  \vspace{0.2cm}
+  \end{tcolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%new Exercise Environment %%%%%%%%%%%%%%%%%%%%%%%%
+%Note: if this causes issue in the future, it might be because 
+%of the samepage environment. Apparently this environment sucks, but 
+%it is used to prevent the top and bottom lines of the exercise 
+%enviionment from overlapping on different pages. In those cases, 
+%it looks weird, and we always want the statment of an exercise to be
+%on the same page.
+\newenvironment{exercise}[1][]{
+    \begin{samepage}   
+    \noindent\rule{\textwidth}{0.5pt}
+    \vspace{-10.5mm}
+    \def\@tempa{#1}
+    \paragraph{#1}
+}{
+    \hfill\break
+    \noindent\rule{\textwidth}{0.5pt}
+\end{samepage}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Proof Environment %%%%%%%%%%%%%%%%%%%%%%%%
+%leftbar environment for proofs
+\newenvironment{proofleftbar}[1][\hsize]
+{%
+    \def\FrameCommand
+    {%
+        {\color{black}\vrule width 0.8pt}%
+        \hspace{5pt}
+        \fboxsep=\FrameSep
+    }
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+} 
+    {\endMakeFramed}
+
+    \newenvironment{prf}[1][]{%
+    \proofleftbar
+    \vspace{-.6cm}
+    \paragraph{\textit{Proof:}}
+}{ 
+    {
+        \mbox{}\hfill$\blacksquare$
+    }
+    \endproofleftbar
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Variable Proof Environment %%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{varprf}[1][]{%
+    \proofleftbar
+    \vspace{-.6cm}
+    \paragraph{\textit{#1}}
+}{% 
+    {%
+        \mbox{}\hfill$\blacksquare$
+    }
+    \endproofleftbar
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Remark Environment %%%%%%%%%%%%%%%%%%%%%%%%
+%leftbar environment for Remarks. Requires xcolor
+\newenvironment{remarkleftbar}[1][\hsize]
+{%
+    \def\FrameCommand
+    {%
+        {\color{Plum}\vrule width 0.8pt}%
+        \hspace{5pt}
+        \fboxsep=\FrameSep%
+    }%
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}
+{\endMakeFramed}
+
+\newenvironment{remark}[1][]{%
+    \remarkleftbar
+    \vspace{-.6cm}
+    \addtocounter{theorem}{1}
+    \paragraph{\textbf{Remark \thetheorem.}}
+}
+{ 
+    \endremarkleftbar
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% Solution Environment %%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{solution}[1][]{{
+    \noindent\textit{\textbf{Solution:}}}
+    }{ 
+        {
+            \mbox{}\hfill$\blacksquare$
+        }
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Example Environment %%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{example}[1][]{
+    {\begin{minipage}{\textwidth}
+        \begin{center}
+            \rule{8cm}{0.4pt}
+        \end{center}
+    \end{minipage}
+    \addtocounter{theorem}{1}
+    \textbf{Example \thetheorem.}
+  }
+ }{
+    \vskip0pt
+    \begin{minipage}{\textwidth}
+        \begin{center}
+            \rule{8cm}{0.4pt}
+        \end{center}
+    \end{minipage}
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%% Important Statement Environment %%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{statementleftbar}[2][\hsize]
+{%
+    \def\FrameCommand
+    {%
+        {\color{black}\vrule width 2.5pt}%
+        \hspace{0pt}%must no space.
+        \fboxsep=\FrameSep\colorbox{#2}%
+    }%
+    \MakeFramed{\hsize#1\advance\hsize-\width\FrameRestore}%
+}{
+  \endMakeFramed
+  }
+
+\newenvironment{statement}[1]{%
+\statementleftbar{#1}
+}{ 
+  \endstatementleftbar
+}
+%%%%%%%%%%%%%%%%%%%%%%%% Align environment, no space %%%%%%%%%%%%%%%%%%%%%%%%
+%sometimes the AMS math environment align's extra vertical space on the 
+%top and bottom is super annoying when one uses align in a special box 
+%or something. This is a solution.
+
+%%%% Removes top and bottom space. 
+\newenvironment{align_topbot}[1][]{
+
+  \centering
+  $\begin{aligned}
+}
+{
+  \end{aligned}$
+  \par
+}
+
+%%%% Removes bottom space, leaves top space. 
+%%%% This is what you probably 
+%%%% want, and this is mostly used when a boxed environment or something 
+%%%% ENDS with an equation, and you don't want to waste extra space at the bottom.
+\newenvironment{align_top}[1][]{
+  \vspace{0.4cm}
+  \centering
+  $\begin{aligned}
+}
+{
+  \end{aligned}$
+  \par
+}
+%%%% Leaves bottom space, removes top space. Probably won't ever use this. 
+\newenvironment{align_bot}[1][]{
+  \centering
+  $\begin{aligned}
+}
+{
+  \end{aligned}$
+  \par
+  \vspace{0.4cm}
+}
+%%%%% Of course, if you want both spaces, just use align from AMS.
+

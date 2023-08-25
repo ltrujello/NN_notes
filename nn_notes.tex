@@ -295,11 +295,75 @@ hobby
   the weights between the output layer and the hidden layer, so that 
   $y = U\vec{h}$. 
 
-  Often times with neural networks it is useful to introduce a \textbf{bias} in each layer. This is 
-  because later, we will be interested in seeing how each individual weight in each layer contributes to the final 
-  output. If the value of a hidden node is simply zero, it will be harder to judge 
-  how the weights (which contributed to that hidden node) are contributing to the final output. Hence, adding a bias 
-  helps prevent the value of a hidden node from becoming just zero.
+  Often times with neural networks it is useful to introduce a \textbf{bias} in each layer.   
+  A bias is an extra node, assigned a value of 1, that we can add to a layer 
+  which will be used to contribute to the calculation of the next layer. Below we illustrate the network 
+  we'd obtain by adding a bias to our previous network.
+
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0, 6.25) circle (0.25cm);
+      \node at (0, 6.8) { $x_0$ };
+      \draw (0, 5.0) circle (0.25cm);
+      \node at (0, 5.55) { $x_1$ };
+      \draw (0, 3.75) circle (0.25cm);
+      \node at (0, 4.3) { $x_2$ };
+      \draw (0, 2.5) circle (0.25cm);
+      \node at (0, 3.05) { $x_3$ };
+      \draw (0, 1.25) circle (0.25cm);
+      \node at (0, 1.8) { $x_4$ };
+      \draw[fill=ProcessBlue, fill opacity=0.5] (0, 0.0) circle (0.25cm);
+      \node at (0, 0.55) { $1$ };
+      \draw (3, 6.25) circle (0.25cm);
+      \node at (3, 6.8) { $h_0$ };
+      \draw (3, 5.0) circle (0.25cm);
+      \node at (3, 5.55) { $h_1$ };
+      \draw (3, 3.75) circle (0.25cm);
+      \node at (3, 4.3) { $h_2$ };
+      \draw (3, 2.5) circle (0.25cm);
+      \node at (3, 3.05) { $h_3$ };
+      \draw (3, 1.25) circle (0.25cm);
+      \node at (3, 1.8) { $h_4$ };
+      \draw (6, 3.75) circle (0.25cm);
+      \node at (6, 4.3) { $y$ };
+      \draw[->] (0.25, 6.25) to (2.75, 6.25);
+      \draw[->] (0.23076923076923075, 6.153846153846154) to (2.769230769230769, 5.096153846153846);
+      \draw[->] (0.19205531989934396, 6.08995390008388) to (2.8079446801006562, 3.91004609991612);
+      \draw[->] (0.15617376188860607, 6.054782797639242) to (2.843826238111394, 2.6952172023607575);
+      \draw[->] (0.12862393885688164, 6.035626768571864) to (2.8713760611431183, 1.4643732314281361);
+      \draw[->] (0.23076923076923075, 5.096153846153846) to (2.769230769230769, 6.153846153846154);
+      \draw[->] (0.25, 5.0) to (2.75, 5.0);
+      \draw[->] (0.23076923076923075, 4.903846153846154) to (2.769230769230769, 3.8461538461538463);
+      \draw[->] (0.19205531989934396, 4.83995390008388) to (2.8079446801006562, 2.66004609991612);
+      \draw[->] (0.15617376188860607, 4.804782797639242) to (2.843826238111394, 1.4452172023607575);
+      \draw[->] (0.19205531989934396, 3.91004609991612) to (2.8079446801006562, 6.08995390008388);
+      \draw[->] (0.23076923076923075, 3.8461538461538463) to (2.769230769230769, 4.903846153846154);
+      \draw[->] (0.25, 3.75) to (2.75, 3.75);
+      \draw[->] (0.23076923076923075, 3.6538461538461537) to (2.769230769230769, 2.5961538461538463);
+      \draw[->] (0.19205531989934396, 3.58995390008388) to (2.8079446801006562, 1.41004609991612);
+      \draw[->] (0.15617376188860607, 2.6952172023607575) to (2.843826238111394, 6.054782797639242);
+      \draw[->] (0.19205531989934396, 2.66004609991612) to (2.8079446801006562, 4.83995390008388);
+      \draw[->] (0.23076923076923075, 2.5961538461538463) to (2.769230769230769, 3.6538461538461537);
+      \draw[->] (0.25, 2.5) to (2.75, 2.5);
+      \draw[->] (0.23076923076923075, 2.4038461538461537) to (2.769230769230769, 1.3461538461538463);
+      \draw[->] (0.12862393885688164, 1.4643732314281361) to (2.8713760611431183, 6.035626768571864);
+      \draw[->] (0.15617376188860607, 1.4452172023607575) to (2.843826238111394, 4.804782797639242);
+      \draw[->] (0.19205531989934396, 1.41004609991612) to (2.8079446801006562, 3.58995390008388);
+      \draw[->] (0.23076923076923075, 1.3461538461538463) to (2.769230769230769, 2.4038461538461537);
+      \draw[->] (0.25, 1.25) to (2.75, 1.25);
+      \draw[->] (0.10818276689619283, 0.2253807643670684) to (2.891817233103807, 6.024619235632931);
+      \draw[->] (0.12862393885688164, 0.21437323142813605) to (2.8713760611431183, 4.785626768571864);
+      \draw[->] (0.15617376188860607, 0.19521720236075757) to (2.843826238111394, 3.5547827976392425);
+      \draw[->] (0.19205531989934396, 0.16004609991611995) to (2.8079446801006562, 2.33995390008388);
+      \draw[->] (0.23076923076923075, 0.09615384615384617) to (2.769230769230769, 1.1538461538461537);
+      \draw[->] (3.1920553198993438, 6.08995390008388) to (5.807944680100656, 3.91004609991612);
+      \draw[->] (3.230769230769231, 4.903846153846154) to (5.769230769230769, 3.8461538461538463);
+      \draw[->] (3.25, 3.75) to (5.75, 3.75);
+      \draw[->] (3.230769230769231, 2.5961538461538463) to (5.769230769230769, 3.6538461538461537);
+      \draw[->] (3.1920553198993438, 1.41004609991612) to (5.807944680100656, 3.58995390008388);
+    \end{tikzpicture}
+  \end{center}
+
 
   If we introduce bias in our above network, the calculation becomes 
   \[
@@ -428,7 +492,7 @@ hobby
       5 & -5 \\
     \end{bmatrix}
   \]
-  allowing us to write $\vec{h} = \sigma(W\vec{x})$ and $y = \sigma(U\vec{h})$, or more explicitly
+  allowing us to write $\vec{h} = \sigma(W\vec{x} + \vec{b_1})$ and $y = \sigma(U\vec{h}) + \vec{b}_2$, or more explicitly
   \begin{align}
     h_0 = \sigma(3x_0 + 4x_1 -2)\\
     h_1 = \sigma(2x_0 + 3x_1 -4)\\
@@ -472,7 +536,7 @@ hobby
       \frac{dL}{du_i} \hspace{1cm} \frac{dL}{dw_{ij}}
   \]
   Once we obtain these quantities, we can update our weights after reviewing one training
-  example $t_i$ via:
+  example $t_i$ via
   \begin{align}
     u'_i &= u_i - \frac{dL}{du_i} \\
     w'_{ij}  &= w_{ij} - \frac{dL}{dw_{ij}}

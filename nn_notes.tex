@@ -469,8 +469,8 @@ hobby
   allowing us to write $\vec{h} = \sigma(W\vec{x})$ and $y = \sigma(U\vec{h})$, 
   or more explicitly, for a given input $(x_0, x_1)$
   \begin{align}
-    h_0 = \sigma(3x_0 + 4x_1 -2)\\
-    h_1 = \sigma(2x_0 + 3x_1 -4)\\
+    h_1 = \sigma(3x_1 + 4x_2 -2)\\
+    h_2 = \sigma(2x_1 + 3x_2 -4)\\
     y = \sigma(5h_1 - 5h_2 + 2)
   \end{align}
   which we can use to calculate the network.
@@ -500,7 +500,10 @@ hobby
   approximates this data with a set of values $y_i$, then the measured loss is 
   \[
       L = \frac{1}{2}\sum_{i}(t_i - y_i)^2
-  \]  
+  \] 
+  In our case, since the output of our function is in $\mathbb{R}$, we have 
+  $L = \frac{1}{2}(t - y)^2$. 
+
   The concept of a cost function now leads to the strategy of back propagation: simply change the 
   model's weights in such a way as to minimize the cost function.
 
@@ -511,10 +514,74 @@ hobby
       \frac{dL}{du_i} \hspace{1cm} \frac{dL}{dw_{ij}}
   \]
   Once we obtain these quantities, we can update our weights after reviewing one training
-  example $t_i$ via
+  example via
   \begin{align}
     u'_i &= u_i - \frac{dL}{du_i} \\
     w'_{ij}  &= w_{ij} - \frac{dL}{dw_{ij}}
+  \end{align}
+  First, let us calculate how the loss is affected by the weights in the final layer (i.e. the 
+  entries of the matrix $U$). Since $y = \sigma(\sum_{k}u_{k}h_k)$, we have that 
+  \[
+    \frac{dL}{du_i} = \frac{dL}{dy}\frac{dy}{du_i}
+  \]
+  Observe that 
+  \[
+    \frac{dL}{dy} = -(t - y)
+  \]
+  and 
+  \begin{align}
+    \frac{dy}{du_i} 
+    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{du_i}\left(\sum_{k}u_{k}h_k\right)
+    = \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
+  \end{align}
+  Since $\sigma'(x) = \sigma(x)\cdot(1 - \sigma(x))$, the above can be written as 
+  $y(1 - y)h_i$. Hence,
+  \[
+    \frac{dL}{du_i}
+    = 
+    -(t - y)y(1 - y)h_i.
+  \]
+  Next, let us calculate how the loss is affected by weights in the first layer (i.e. the entries 
+  of the matrix $W$). Once again we have 
+  \[
+    \frac{dL}{dw_{ij}} = \frac{dL}{dy}\frac{dy}{dw_{ij}} = \frac{dL}{dy}\frac{dy}{dh_{i}}
+    \frac{dh_i}{dw_{ij}} 
+  \]
+  We already know $\frac{dL}{dy}$. Thus we calculate 
+  \begin{align}
+    \frac{dy}{dh_{i}}
+    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{dh_i}\left(\sum_{k}u_{k}h_k\right)\\
+    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot u_i\\
+    &= y(1 - y)u_i
+  \end{align}
+  and since $h_i = \sigma\left( \sum_{k}w_{ik}x_k \right)$, we have that 
+  \begin{align}
+    \frac{dh_i}{dw_{ij}} 
+    &= \sigma'\left(\sum_{k}w_{ik}x_i\right) \cdot \frac{d}{dw_{ij}} \left( \sum_{k}w_{ik}x_k \right) \\
+    &= \sigma'\left(\sum_{k}w_{ik}x_i\right) \cdot x_j  \\
+    &= h_i(1 - h_i)x_i
+  \end{align}
+  Combining all of our calculations, we then get that 
+  \[
+    \frac{dL}{dw_{ij}}= -(t - y) \cdot y(1 - y)u_i \cdot h_i(1 - h_i)x_j
+  \]
+  If we define $\delta = -(t - y)y(1 - y)$, interpreting it as an error term,
+  we obtain the following explicit weight update formulas.
+  \begin{align}
+    u_1' &= u_1 - \delta h_1\\
+    u_2' &= u_2 - \delta h_2\\
+    w_{11}' &= w_{11} - \delta u_1h_1(1 - h_1)x_1\\
+    w_{12}' &= w_{12} - \delta u_1h_1(1 - h_1)x_2\\
+    w_{21}' &= w_{21} - \delta u_2h_2(1 - h_2)x_1\\
+    w_{22}' &= w_{22} - \delta u_2h_2(1 - h_2)x_2\\
+  \end{align}
+  Recall that the weights $u_3$ (in $U$) and $w_{13}$, $w_{23}$ (in $W$) 
+  corresponding to the bias parameters in our model. Their weight update formulas are much simpler, 
+  since the value of their origin node is automatically fixed to 1:
+  \begin{align}
+    u_3' &= u_3 - \delta \\
+    w_{13}' &= w_{13} - \delta u_1h_1(1 - h_1)\\
+    w_{23}' &= w_{23} - \delta u_2h_2(1 - h_2)\\
   \end{align}
 
   

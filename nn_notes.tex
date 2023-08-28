@@ -361,12 +361,25 @@ hobby
   we started with), just with a different weight matrix $W'$. 
   The reason is because our network is linear, which means 
   no matter how many layers we add it will always reduce to the same boring network we started with. 
+  As we know, linear patterns cannot adequately capture complex patterns.
   Thus in order to get something interesting with hidden layers we need to add some nonlinearity.
   
   \section{Nonlinearity}
   Neural networks achieve our desired property of nonlinearity via usage of \textbf{activation fuctions}.
-  A few common examples of such functions are the sigmoid (also known as logistic), tanh or RELU functions, and the choice of an activation 
-  function depends on what one is trying to achieve with a neural network. 
+  An activation function is a function $f$ that is called on the summation of a given node in a network, allowing 
+  us to modify the calculation for a node $h_i$ as below.
+  \[
+    h_i = f\left(\sum_{j}w_{ij}x_j\right)
+  \]
+  We can introduce nonlinearity into our system if we design $f$ to be nonlinear. 
+
+  A few common examples of such functions are the sigmoid (also known as logistic), tanh or RELU functions.
+  The machine learning community has gone through several iterations of what is considered to be 
+  best practice for an activation function. In the 1990s, the sigmoid function was used very widely.
+  In the later 90s and early 2000s, it was discovered that the tanh function lead to be better 
+  training performance. Later, it was the discovered that the ReLU function lead to even better 
+  training performance. As a result, most modern neural networks will use this for the 
+  activation function. 
 
   The sigmoid function is given by
   \[
@@ -532,7 +545,7 @@ hobby
   \begin{align}
     \frac{dy}{du_i} 
     &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{du_i}\left(\sum_{k}u_{k}h_k\right)
-    = \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
+    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
   \end{align}
   Since $\sigma'(x) = \sigma(x)\cdot(1 - \sigma(x))$, the above can be written as 
   $y(1 - y)h_i$. Hence,

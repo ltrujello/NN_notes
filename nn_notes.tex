@@ -381,11 +381,12 @@ hobby
   training performance. As a result, most modern neural networks will use this for the 
   activation function. 
 
-  The sigmoid function is given by
+  Let's introduce the activation functions we just discussed. Below, we have 
+  the sigmoid function
   \[
       \sigma(x) = \frac{1}{1 + e^{-x}}
   \]
-  The graph of the sigmoid function is given below.
+  and the graph of the sigmoid function is given below.
   \begin{center}
     \begin{tikzpicture}
       \begin{scope}
@@ -402,6 +403,32 @@ hobby
   \end{tikzpicture}
   \end{center}
 
+  Finally, ReLU itself is given by 
+  \[
+    r(x) = 
+    \begin{cases}
+      x & \text{if } x > 0\\
+      0 & \text{otherwise}  
+    \end{cases}
+  \]
+  Below we have ReLU, which we will use in our examples as it generally results in better 
+  training performance.
+  \begin{center}
+    \begin{tikzpicture}
+      \begin{scope}
+    \draw[Gray!30, ->] (-4, 0) to (4, 0);
+    \draw[Gray!30, ->] (0, 0) to (0, 5.0);
+    \node[below] at (4, 0) { $x$ };
+    \node[left] at (0, 5.0) { $y$ };
+  \end{scope}
+  
+      \draw[dashed] (-3.5, 4.5) to (4.5, 4.5);
+      \node[left] at (-3.5, 4.5) { $y=1$ };
+      \draw[ProcessBlue, <-] (-4, 0) to (0, 0);
+      \draw[ProcessBlue, ->] (0, 0) to (4.5, 4.5);
+  \end{tikzpicture}
+  \end{center}
+
   Using our previous network, we can add nonlinearity by defining the computation of a hidden unit to be 
   \[
     h_j = \sigma\left( \sum_{i}w_{ij}x_i + b_i \right)  
@@ -410,8 +437,9 @@ hobby
 
   \section{Backpropagation: A first stab}
   At this point, as we have discussed the basic properties of a neural network, 
-  we will introduce a concrete example of a neural network and attempt to perform train it to 
-  approximate the XOR function, which performs the following mapping on two bit inputs:
+  we will introduce a concrete example of a neural network and attempt to train it to 
+  approximate the XOR function. The XOR function 
+  performs the following mapping on these two bit inputs:
   \begin{align}
         \begin{bmatrix}
         1 \\ 0
@@ -429,7 +457,8 @@ hobby
         1 \\ 1
       \end{bmatrix} \rightarrow 0
     \end{align}
-  Below is our proposed network.
+  Below is our proposed network. We'll use ReLU, denoted as $r(x)$, 
+  for the activation function on our nodes. 
   \begin{center}
     \begin{tikzpicture}
       \draw (0, 2.5) circle (0.25cm);
@@ -456,35 +485,35 @@ hobby
       \draw[->] (3.25, -1.5308084989341915e-17) to (5.0, 1.5308084989341915e-17);
       \draw[->] (3.1672411829056126, -2.3141764634382085) to (5.082758817094388, -0.18582353656179157);
       \node[above] at (1.5, 2.5) { 3 };
-      \node[above] at (0.7152331919396064, 1.903972340050328) { 4 };
-      \node[above] at (0.7152331919396064, 0.5960276599496719) { 2 };
+      \node[above] at (0.7152331919396064, 1.903972340050328) { 2 };
+      \node[above] at (0.7152331919396064, 0.5960276599496719) { 4 };
       \node[above] at (1.0, -6.1232339957367656e-18) { 3 };
-      \node[left] at (0.677174363314129, -1.3713760611431185) { -2 };
-      \node[below] at (1.5, -1.25) { -4 };
+      \node[left] at (0.677174363314129, -1.3713760611431185) { 2 };
+      \node[below] at (1.5, -1.25) { 4 };
       \node[right] at (3.933448236581123, 1.4628352926876418) { 5 };
-      \node[above] at (4.125, 0.0) { -5 };
-      \node[left] at (4.125, -1.25) { -2 };
+      \node[above] at (4.125, 0.0) { 5 };
+      \node[left] at (4.125, -1.25) { 2 };
     \end{tikzpicture}
   \end{center}
-  Note that we have a bias inbetween each layer. The first one has weights -2 and -4, and the second one 
+  Note that we have a bias inbetween each layer. The first one has weights 2 and -4, and the second one 
   has weight -2. Thus for this network, the weight matrices are defined to be 
   \[
     W = 
     \begin{bmatrix}
-      3 & 4 & -2 \\
-      2 & 3 & -4 \\
+      3 & 4 & 2 \\
+      2 & 3 & 4 \\
     \end{bmatrix}
     \hspace{1cm}
     U = \begin{bmatrix}
-      5 & -5 & -2 \\
+      5 & 5 & 2 \\
     \end{bmatrix}
   \]
-  allowing us to write $\vec{h} = \sigma(W\vec{x})$ and $y = \sigma(U\vec{h})$, 
+  allowing us to write $\vec{h} = r(W\vec{x})$ and $y = r(U\vec{h})$, 
   or more explicitly, for a given input $(x_0, x_1)$
   \begin{align}
-    h_1 = \sigma(3x_1 + 4x_2 -2)\\
-    h_2 = \sigma(2x_1 + 3x_2 -4)\\
-    y = \sigma(5h_1 - 5h_2 + 2)
+    h_1 = r(3x_1 + 4x_2 + 2)\\
+    h_2 = r(2x_1 + 3x_2 + 4)\\
+    y = r(5h_1 + 5h_2 + 2)
   \end{align}
   which we can use to calculate the network.
   Below is a table of how this neural network currently computes the XOR values.
@@ -533,7 +562,7 @@ hobby
     w'_{ij}  &= w_{ij} - \frac{dL}{dw_{ij}}
   \end{align}
   First, let us calculate how the loss is affected by the weights in the final layer (i.e. the 
-  entries of the matrix $U$). Since $y = \sigma(\sum_{k}u_{k}h_k)$, we have that 
+  entries of the matrix $U$). Since $y = r(\sum_{k}u_{k}h_k)$, we have that 
   \[
     \frac{dL}{du_i} = \frac{dL}{dy}\frac{dy}{du_i}
   \]
@@ -542,17 +571,17 @@ hobby
     \frac{dL}{dy} = -(t - y)
   \]
   and 
-  \begin{align}
+  \[
     \frac{dy}{du_i} 
-    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{du_i}\left(\sum_{k}u_{k}h_k\right)
-    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
-  \end{align}
-  Since $\sigma'(x) = \sigma(x)\cdot(1 - \sigma(x))$, the above can be written as 
-  $y(1 - y)h_i$. Hence,
+    = r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{du_i}\left(\sum_{k}u_{k}h_k\right)
+    = r'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
+  \]
+  If we write $s_y = \sum_{k}u_kh_k$ (i.e. the summation before applying the activation $r$ 
+  which calculates the value of $y$) then we can write
   \[
     \frac{dL}{du_i}
     = 
-    -(t - y)y(1 - y)h_i.
+    -(t - y)r'(s_y)h_i.
   \]
   Next, let us calculate how the loss is affected by weights in the first layer (i.e. the entries 
   of the matrix $W$). Once again we have 
@@ -563,41 +592,83 @@ hobby
   We already know $\frac{dL}{dy}$. Thus we calculate 
   \begin{align}
     \frac{dy}{dh_{i}}
-    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{dh_i}\left(\sum_{k}u_{k}h_k\right)\\
-    &= \sigma'\left(\sum_{k}u_{k}h_k\right) \cdot u_i\\
-    &= y(1 - y)u_i
+    &= r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{dh_i}\left(\sum_{k}u_{k}h_k\right)\\
+    &= r'\left(\sum_{k}u_{k}h_k\right) \cdot u_i\\
+    &= r'(s_{y})u_i
   \end{align}
-  and since $h_i = \sigma\left( \sum_{k}w_{ik}x_k \right)$, we have that 
+  and since $h_i = r\left( \sum_{k}w_{ik}x_k \right)$ we have that 
   \begin{align}
     \frac{dh_i}{dw_{ij}} 
-    &= \sigma'\left(\sum_{k}w_{ik}x_i\right) \cdot \frac{d}{dw_{ij}} \left( \sum_{k}w_{ik}x_k \right) \\
-    &= \sigma'\left(\sum_{k}w_{ik}x_i\right) \cdot x_j  \\
-    &= h_i(1 - h_i)x_i
+    &= r'\left(\sum_{k}w_{ik}x_i\right) \cdot \frac{d}{dw_{ij}} \left( \sum_{k}w_{ik}x_k \right) \\
+    &= r'\left(\sum_{k}w_{ik}x_i\right) \cdot x_j 
   \end{align}
+  If we write $s_{h_i} = \sum_{k}w_{ik}h_k$, then we can write
+  \[
+    \frac{dh_i}{dw_{ij}} 
+    = r'(s_{h_i})x_i
+  \]
   Combining all of our calculations, we then get that 
   \[
-    \frac{dL}{dw_{ij}}= -(t - y) \cdot y(1 - y)u_i \cdot h_i(1 - h_i)x_j
+    \frac{dL}{dw_{ij}}= -(t - y) \cdot r'(s_y)u_i \cdot r'(s_{h_i})x_j
   \]
-  If we define $\delta = -(t - y)y(1 - y)$, interpreting it as an error term,
+  If we define $\delta = -(t - y)r'(s_y)$, interpreting it as an error term,
   we obtain the following explicit weight update formulas.
   \begin{align}
     u_1' &= u_1 - \delta h_1\\
     u_2' &= u_2 - \delta h_2\\
-    w_{11}' &= w_{11} - \delta u_1h_1(1 - h_1)x_1\\
-    w_{12}' &= w_{12} - \delta u_1h_1(1 - h_1)x_2\\
-    w_{21}' &= w_{21} - \delta u_2h_2(1 - h_2)x_1\\
-    w_{22}' &= w_{22} - \delta u_2h_2(1 - h_2)x_2\\
+    w_{11}' &= w_{11} - \delta u_1r'(s_{h_1})x_1\\
+    w_{12}' &= w_{12} - \delta u_1r'(s_{h_1})x_2\\
+    w_{21}' &= w_{21} - \delta u_2r'(s_{h_2})x_1\\
+    w_{22}' &= w_{22} - \delta u_2r'(s_{h_2})x_2\\
   \end{align}
   Recall that the weights $u_3$ (in $U$) and $w_{13}$, $w_{23}$ (in $W$) 
-  corresponding to the bias parameters in our model. Their weight update formulas are much simpler, 
-  since the value of their origin node is automatically fixed to 1:
+  correspond to the bias parameters in our model. Their weight update formulas are much simpler, 
+  since the value of their origin node is automatically fixed to 1.
   \begin{align}
     u_3' &= u_3 - \delta \\
-    w_{13}' &= w_{13} - \delta u_1h_1(1 - h_1)\\
-    w_{23}' &= w_{23} - \delta u_2h_2(1 - h_2)\\
+    w_{13}' &= w_{13} - \delta u_1r'(s_{h_1})\\
+    w_{23}' &= w_{23} - \delta u_2r'(s_{h_2})\\
   \end{align}
 
-  
+  This completes our description for how we update our model's weights given 
+  one training example. In practice, however, we tend to have many training examples 
+  $t_1, t_2, \dots, t_N$ that we can use to update our model. 
+  There are three main approaches as to exactly how we can update our 
+  model's weights using all of the training examples.
+  \begin{itemize}
+    \item \textbf{Stochastic Gradient Descent.} Update the model's weights after each training example $t_i$.
+    \item\textbf{Batch Gradient Descent.} Update the model's weights after showing it every training example. 
+    In this case, we could achieve this by collecting all of the gradients calculated from each 
+    training example and then averaging them.
+    \[
+      w'_{ij}  = w_{ij} - \frac{1}{N} \sum_{t_k}\frac{dL(t_k)}{dw_{ij}}
+    \]
+    \item\textbf{Mini-Batch Gradient Descent.} Update the model's weights after showing it $n < N$ many training 
+    examples; we'd call $n$ our \textbf{batch size}. 
+    This can be thought of as a compromise between stochastic and batch gradient descent. 
+  \end{itemize}
+  These three methods trade off training speed and model accuracy. As mini-batch is a compromise 
+  between speed and accuracy, it tends to be preferred in practice. In any case, 
+  in practice we tend to train the model on the training set each time; each iteration is 
+  called an \textbf{epoch}, and so a training procedure may undergo several epochs.
+  Too few epochs will lead to poor accuracy, but too many epochs will leads to 
+  poor generalization outside of the training set, a concept known as \textbf{overfitting}.
+
+  For this example, if we perform batch gradient descent on the model we presented, using our 
+  four training examples of the XOR function,
+  training this for tens of thousands of epochs
+  will allow us to converge on these model weighs 
+  \begin{align}
+    W = 
+    \begin{bmatrix}
+      1.52183263 & 1.55282077 & -1.55282077 \\
+      1.0637993 & 1.0637993 & 0.39200322 \\
+    \end{bmatrix}\\
+    U = \begin{bmatrix}
+      -1.31420497 & 0.94002694 & -0.36849359\\
+    \end{bmatrix}
+  \end{align}
+  which successfully mimic the XOR function.
 
   
   \section{Backpropagation: More generally}

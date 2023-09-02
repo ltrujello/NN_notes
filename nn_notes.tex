@@ -672,8 +672,64 @@ hobby
 
   
   \section{Backpropagation: More generally}
+    At this point we have so far only dealt with neural networks that have at 
+    most one hidden layer and only one output node. In general, neural networks can be designed 
+    to have many hidden layers and many outputs nodes. We now present the backpropagation
+    algorithm for deep neural networks that have arbitrarily many output nodes.
 
+    First, we introduce some notation.
+    Consider a neural network with $N$ layers (including the input and output layers).
+    Let $h_i^{n}$ denote the $i$-th hidden node in the $n$-th layer (hence $1 < n \le N$).
+    Let $w_{ij}^{(n)}$ denote the weight going from node 
+    $h_j^{(n-1)}$ to $h_i^{(n)}$. We'll denote the 
+    matrix made up of the weights $w_{ij}^{(n)}$ to be $W_n$.
+    Below is a snapshot 
+    of this specific part of the neural network.
 
+    \begin{center}
+      \begin{tikzpicture}
+        \draw (0, 0) circle (0.25cm);
+        \draw (4, 1) circle (0.25cm);
+        \draw[->] (0.24253562503633297, 0.06063390625908324) to (3.757464374963667, 0.9393660937409167);
+        \node at (2.0, 1.0) { $w^{(n)}_{ij}$ };
+        \node at (0.3, 0.75) { $h^{(n - 1)}_{j}$ };
+        \node at (4.3, 1.75) { $h^{(n)}_{i}$ };
+        \node at (0, 1.5) { $\vdots$ };
+        \node at (0, -1) { $\vdots$ };
+        \node at (4, 2.5) { $\vdots$ };
+        \node at (4, 0) { $\vdots$ };
+    \end{tikzpicture}
+    \end{center}
+    Suppose we are given a dataset to train the weights of our neural network. 
+    Then this means that, given a cost function $L$, we are interested in the quantity
+    \[
+      \frac{dL}{dw_{ij}^{(n)}} 
+    \] 
+    where $1 \le n \le N$ and $i$, $j$ vary as valid indices over the overall weight matrix 
+    $W_n$. Then we have the following result for general backpropagation.
+
+    \begin{theorem}[\textbf{Backpropagation}]
+      Let $h_{k}^{\ell}$ denote the $k$-th hidden unit in layer $\ell$ where $n \le \ell \le N$.
+      Then for the weight $w^{(n)}_{ij}$, we have the recurrence relation 
+      \[
+        \frac{dh_k^{\ell}}{dw^{(n)}_{ij}}
+        =
+        h_k^{(\ell)}(s)
+        \cdot
+        \sum_{t}w_{kt}\frac{dh^{(\ell-1)}_t}{dw^{(n)}_{ij}}.
+      \]
+      In the special case of when
+      $\ell = n$, we have that
+      \[
+        \frac{dh_k^{n}}{dw^{(n)}_{ij}} = 0
+        \hspace{1cm} \text{if $k \ne i$, otherwise} \hspace{1cm} \frac{dh_i^{n}}{dw^{(n)}_{ij}} = h_i^n \cdot h_j^{(n -1)}
+      \]
+      We can then use to write a general update formula for all 
+      weights
+      \[
+        w^{(n)}_{ij} = w^{(n)}_{ij} - \frac{dh_k^{n}}{dw^{(n)}_{ij}}
+      \]
+    \end{theorem}
 
 
 

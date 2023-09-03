@@ -700,6 +700,13 @@ hobby
         \node at (4, 0) { $\vdots$ };
     \end{tikzpicture}
     \end{center}
+    With this notation, we can calculate the value of a hidden node as below:
+    \[
+      h_i^{(n)} = \sigma\left(\sum_{t}w^{(n)}_{it}h^{(n-1)}_t\right)
+    \]
+    where $\sigma$ is our choice of an activation function.
+      Of course, the nodes in the $N$-th layer (i.e. $h_k^N$) correspond to the output of our neural network.
+
     Suppose we are given a dataset to train the weights of our neural network. 
     Then this means that, given a cost function $L$, we are interested in the quantity
     \[
@@ -714,22 +721,31 @@ hobby
       \[
         \frac{dh_k^{\ell}}{dw^{(n)}_{ij}}
         =
-        h_k^{(\ell)}(s)
+        h_k^{\prime(\ell)}(s)
         \cdot
-        \sum_{t}w_{kt}\frac{dh^{(\ell-1)}_t}{dw^{(n)}_{ij}}.
+        \sum_{t}w_{kt}^{(\ell)}\frac{dh^{(\ell-1)}_t}{dw^{(n)}_{ij}} 
+        \hspace{0.5cm} \ell = N, N-1, \dots, n
       \]
-      In the special case of when
+      where $s =\sum_{t}w^{(\ell)}_{kt}h^{(\ell-1)}_t$.
+      When
       $\ell = n$, we have that
       \[
-        \frac{dh_k^{n}}{dw^{(n)}_{ij}} = 0
-        \hspace{1cm} \text{if $k \ne i$, otherwise} \hspace{1cm} \frac{dh_i^{n}}{dw^{(n)}_{ij}} = h_i^n \cdot h_j^{(n -1)}
+        \frac{dh_k^{n}}{dw^{(n)}_{ij}} = 
+        \begin{cases}
+          h_i^n \cdot h_j^{(n -1)} & \text{ if } k = i\\
+          0 & \text{ otherwise}
+        \end{cases}
       \]
-      We can then use to write a general update formula for all 
-      weights
+      We can then use this recurrence relation to calculate the value of 
+      $\frac{dL}{dw^{(n)}_{ij}}$, allowing us to use an update formula as below
       \[
-        w^{(n)}_{ij} = w^{(n)}_{ij} - \frac{dh_k^{n}}{dw^{(n)}_{ij}}
+        w^{(n)}_{ij} = w^{(n)}_{ij} - \frac{dL}{dw^{(n)}_{ij}}
       \]
     \end{theorem}
+
+    The above result can be derived from simple use of the chain rule. The reason
+    for the special case is because the weight $w_{ij}^{(n)}$
+    only has an affect on node $h_i^{(n)}$ in the $n$-th layer.
 
 
 

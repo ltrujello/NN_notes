@@ -544,72 +544,124 @@ hobby
       L = \frac{1}{2}\sum_{i}(t_i - y_i)^2
   \] 
   In our case, since the output of our function is in $\mathbb{R}$, we have 
-  $L = \frac{1}{2}(t - y)^2$. 
+  $L(t, y) = \frac{1}{2}(t - y)^2$. 
 
-  The concept of a cost function now leads to the strategy of back propagation: simply change the 
-  model's weights in such a way as to minimize the cost function.
+  The concept of a cost function now leads to the strategy of back propagation:
+  we seek an optimal set of weights $u_i$ and $w_{ij}$ such that 
+  our cost function is minimized with respect to our dataset. 
+  Intuitively this makes sense, but what does this mean mathematically?
 
-  In the case of our model, we need to find out what direction, and how much, we should ``push'' each 
-  value of our existing matices $U$ and $W$, so as to minimize the cost function. 
+  Let us take an abstract perspective. Up until this point we have defined $y:\mathbb{R}^2 \to \mathbb{R}$ 
+  to be a function that takes in two inputs. By abuse of notation, we can just as well view 
+  $y$ to be a function of two inputs $x_1, x_2$ \emph{and} the weights 
+  $u_1, u_2, u_3, w_{11}, w_{12}, w_{13}, w_{21}, w_{22}, w_{23}$. For our specific model 
+  architecture, the exact expression would be 
+  \begin{align}
+    y &= r(u_1h_1 + u_2h_2 + u_3) \\
+     &= r(u_1r(w_{11}x_1 + w_{12}x_2 + w_{13}) + u_2r(w_{21}x_1 + w_{22}x_2 + w_{23}) + u_3)
+  \end{align}
+  and we can declare that $y: \mathbb{R}^{11} \to \mathbb{R}$. In this case, we can 
+  write 
+  \[
+    y(u_1, u_2, u_3, w_{11}, w_{12}, w_{13}, w_{21}, w_{22}, w_{23}, x_1, x_2)  
+  \]
+  to emphasize that $y$ is capable of taking in 11 inputs. 
+  From this perspective, our initally proposed model is a special case of the above expression, 
+  just with appropriate values for the weights filled in for $u_i$ and $w_{ij}$.
+  In fact, our initial model is just $y(5, 5, 2, 3, 4, 2, 2, 3, 4, x_1, x_2)$.
+
+  Next, consider our cost function $L: \mathbb{R}^2 \to \mathbb{R}$. While we have considered it to be 
+  a function of two inputs, we can similarly abuse notation and view it as a function of 
+  many inputs.
+  \[
+    L(t, y) = L(t, y(u_1, u_2, u_3, w_{11}, w_{12}, w_{13}, w_{21}, w_{22}, w_{23}, x_1, x_2))
+  \]
+  In this case, we have that $L: \mathbb{R}^{12} \to \mathbb{R}$. 
+
+  Let $(t_1, \vec{x}_1)$, $(t_2, \vec{x}_2)$ , \dots , $(t_n, \vec{x}_n)$ 
+  be a dataset of interests, where $t_i \in \mathbb{R}$ denotes the target values and 
+  $\vec{x}_i = (x_1^{(i)}, x_2^{(i)})\in \mathbb{R}^2$ denotes the input values to our model.
+
+  For one datatset pair $(t_k, \vec{x}_k)$, we obtain a function 
+  $L_k: \mathbb{R}^9 \to \mathbb{R}$ by taking $L: \mathbb{R}^{12} \to \mathbb{R}$ and 
+  plugging in the value $t_k$ for the variable $t$ and 
+  the values $x^{(k)}_1, x^{(k)}_2$ into the variables $x_1, x_2$.  
+  
+  \[  
+      L_k = L(t_k, u_1, u_2, u_3, w_{11}, w_{12}, w_{13}, w_{21}, w_{22}, w_{23}, x^{(k)}_1, x^{(k)}_2)
+  \]
+  The above expression is exactly what we need to minimize. We desire a set of weights 
+  such that $L_k$ is minimized for all $k = 1, 2, \dots, n$. This would let us know the weights 
+  we need in our neural network to fit our dataset. If only there was an algorithm to do this!
+
+  If the reader may allow us to abuse notation once more, denote 
+  $L_k$ as $L$, keeping in mind we are discussing this in the context of the
+  training example $(t_k, \vec{x}_k)$
+  
+  
+  
+  
+  We can minimize $L$ with respect to the training example $(t_k, \vec{x}_k)$ 
+  by calculating the gradient with respect to each of the weights.
   In terms of calculus, this means we are interested in the quantities 
   \[
-      \frac{dL}{du_i} \hspace{1cm} \frac{dL}{dw_{ij}}
+      \frac{\partial L}{\partial u_i} \hspace{1cm} \frac{\partial L}{\partial w_{ij}}
   \]
   Once we obtain these quantities, we can update our weights after reviewing one training
   example via
   \begin{align}
-    u'_i &= u_i - \frac{dL}{du_i} \\
-    w'_{ij}  &= w_{ij} - \frac{dL}{dw_{ij}}
+    u'_i &= u_i - \frac{\partial L}{\partial u_i} \\
+    w'_{ij}  &= w_{ij} - \frac{\partial L}{\partial w_{ij}}
   \end{align}
   First, let us calculate how the loss is affected by the weights in the final layer (i.e. the 
   entries of the matrix $U$). Since $y = r(\sum_{k}u_{k}h_k)$, we have that 
   \[
-    \frac{dL}{du_i} = \frac{dL}{dy}\frac{dy}{du_i}
+    \frac{\partial L}{\partial u_i} = \frac{\partial L}{\partial y}\frac{\partial y}{\partial u_i}
   \]
   Observe that 
   \[
-    \frac{dL}{dy} = -(t - y)
+    \frac{\partial L}{\partial y} = -(t - y)
   \]
   and 
   \[
-    \frac{dy}{du_i} 
-    = r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{du_i}\left(\sum_{k}u_{k}h_k\right)
+    \frac{\partial y}{\partial u_i} 
+    = r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{\partial }{\partial u_i}\left(\sum_{k}u_{k}h_k\right)
     = r'\left(\sum_{k}u_{k}h_k\right) \cdot h_i
   \]
   If we write $s_y = \sum_{k}u_kh_k$ (i.e. the summation before applying the activation $r$ 
   which calculates the value of $y$) then we can write
   \[
-    \frac{dL}{du_i}
+    \frac{\partial L}{\partial u_i}
     = 
     -(t - y)r'(s_y)h_i.
   \]
   Next, let us calculate how the loss is affected by weights in the first layer (i.e. the entries 
   of the matrix $W$). Once again we have 
   \[
-    \frac{dL}{dw_{ij}} = \frac{dL}{dy}\frac{dy}{dw_{ij}} = \frac{dL}{dy}\frac{dy}{dh_{i}}
-    \frac{dh_i}{dw_{ij}} 
+    \frac{\partial L}{\partial w_{ij}} = \frac{\partial L}{\partial y}\frac{\partial y}{\partial w_{ij}} = \frac{\partial L}{\partial y}\frac{\partial y}{\partial h_{i}}
+    \frac{\partial h_i}{\partial w_{ij}} 
   \]
-  We already know $\frac{dL}{dy}$. Thus we calculate 
+  We already know $\frac{\partial L}{\partial y}$. Thus we calculate 
   \begin{align}
-    \frac{dy}{dh_{i}}
-    &= r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{d}{dh_i}\left(\sum_{k}u_{k}h_k\right)\\
+    \frac{\partial y}{\partial h_{i}}
+    &= r'\left(\sum_{k}u_{k}h_k\right) \cdot \frac{\partial }{\partial h_i}\left(\sum_{k}u_{k}h_k\right)\\
     &= r'\left(\sum_{k}u_{k}h_k\right) \cdot u_i\\
     &= r'(s_{y})u_i
   \end{align}
   and since $h_i = r\left( \sum_{k}w_{ik}x_k \right)$ we have that 
   \begin{align}
-    \frac{dh_i}{dw_{ij}} 
-    &= r'\left(\sum_{k}w_{ik}x_i\right) \cdot \frac{d}{dw_{ij}} \left( \sum_{k}w_{ik}x_k \right) \\
+    \frac{\partial h_i}{\partial w_{ij}} 
+    &= r'\left(\sum_{k}w_{ik}x_i\right) \cdot \frac{\partial }{\partial w_{ij}} \left( \sum_{k}w_{ik}x_k \right) \\
     &= r'\left(\sum_{k}w_{ik}x_i\right) \cdot x_j 
   \end{align}
   If we write $s_{h_i} = \sum_{k}w_{ik}h_k$, then we can write
   \[
-    \frac{dh_i}{dw_{ij}} 
+    \frac{\partial h_i}{\partial w_{ij}} 
     = r'(s_{h_i})x_i
   \]
   Combining all of our calculations, we then get that 
   \[
-    \frac{dL}{dw_{ij}}= -(t - y) \cdot r'(s_y)u_i \cdot r'(s_{h_i})x_j
+    \frac{\partial L}{\partial w_{ij}}= -(t - y) \cdot r'(s_y)u_i \cdot r'(s_{h_i})x_j
   \]
   If we define $\delta = -(t - y)r'(s_y)$, interpreting it as an error term,
   we obtain the following explicit weight update formulas.
@@ -641,7 +693,7 @@ hobby
     In this case, we could achieve this by collecting all of the gradients calculated from each 
     training example and then averaging them.
     \[
-      w'_{ij}  = w_{ij} - \frac{1}{N} \sum_{t_k}\frac{dL(t_k)}{dw_{ij}}
+      w'_{ij}  = w_{ij} - \frac{1}{N} \sum_{t_k}\frac{\partial L(t_k)}{\partial w_{ij}}
     \]
     \item\textbf{Mini-Batch Gradient Descent.} Update the model's weights after showing it $n < N$ many training 
     examples; we'd call $n$ our \textbf{batch size}. 
@@ -679,7 +731,9 @@ hobby
 
     First, we introduce some notation.
     Consider a neural network with $N$ layers (including the input and output layers).
-    Let $h_i^{n}$ denote the $i$-th hidden node in the $n$-th layer (hence $1 < n \le N$).
+    Let $h_i^{(n)}$ denote the $i$-th hidden node in the $n$-th layer (hence $1 < n \le N$).
+    We add parentheses to the $n$ superscript to remind the reader that it is not an exponent
+    but is rather an index for notational purposes.
     Let $w_{ij}^{(n)}$ denote the weight going from node 
     $h_j^{(n-1)}$ to $h_i^{(n)}$. We'll denote the 
     matrix made up of the weights $w_{ij}^{(n)}$ to be $W_n$.
@@ -704,13 +758,17 @@ hobby
     \[
       h_i^{(n)} = \sigma\left(\sum_{t}w^{(n)}_{it}h^{(n-1)}_t\right)
     \]
-    where $\sigma$ is our choice of an activation function.
-      Of course, the nodes in the $N$-th layer (i.e. $h_k^N$) correspond to the output of our neural network.
+    where $\sigma$ is our choice of an activation function and 
+    $t$ varies over the hidden nodes in layer $n$.
+    Also, observe that in this description the nodes in the 
+    $N$-th layer (i.e. $h_k^N$) correspond to the output of our neural network.
 
     Suppose we are given a dataset to train the weights of our neural network. 
     Then this means that, given a cost function $L$, we are interested in the quantity
     \[
-      \frac{dL}{dw_{ij}^{(n)}} 
+      \frac{\partial L}{\partial w_{ij}^{(n)}} = 
+      \frac{\partial L}{\partial h_{k}^{(N)}} 
+      \frac{\partial h_{k}^{(N)}}{\partial w_{ij}^{(n)}}
     \] 
     where $1 \le n \le N$ and $i$, $j$ vary as valid indices over the overall weight matrix 
     $W_n$. Then we have the following result for general backpropagation.
@@ -719,27 +777,26 @@ hobby
       Let $h_{k}^{\ell}$ denote the $k$-th hidden unit in layer $\ell$ where $n \le \ell \le N$.
       Then for the weight $w^{(n)}_{ij}$, we have the recurrence relation 
       \[
-        \frac{dh_k^{\ell}}{dw^{(n)}_{ij}}
+        \frac{\partial h_k^{\ell}}{\partial w^{(n)}_{ij}}
         =
         h_k^{\prime(\ell)}(s)
         \cdot
-        \sum_{t}w_{kt}^{(\ell)}\frac{dh^{(\ell-1)}_t}{dw^{(n)}_{ij}} 
-        \hspace{0.5cm} \ell = N, N-1, \dots, n
+        \sum_{t}w_{kt}^{(\ell)}\frac{\partial h^{(\ell-1)}_t}{\partial w^{(n)}_{ij}} 
       \]
       where $s =\sum_{t}w^{(\ell)}_{kt}h^{(\ell-1)}_t$.
       When
       $\ell = n$, we have that
       \[
-        \frac{dh_k^{n}}{dw^{(n)}_{ij}} = 
+        \frac{\partial h_k^{n}}{\partial w^{(n)}_{ij}} = 
         \begin{cases}
           h_i^n \cdot h_j^{(n -1)} & \text{ if } k = i\\
           0 & \text{ otherwise}
         \end{cases}
       \]
       We can then use this recurrence relation to calculate the value of 
-      $\frac{dL}{dw^{(n)}_{ij}}$, allowing us to use an update formula as below
+      $\frac{\partial L}{\partial w^{(n)}_{ij}}$, allowing us to use an update formula as below.
       \[
-        w^{(n)}_{ij} = w^{(n)}_{ij} - \frac{dL}{dw^{(n)}_{ij}}
+        w^{(n)}_{ij} = w^{(n)}_{ij} - \frac{\partial L}{\partial w^{(n)}_{ij}}
       \]
     \end{theorem}
 

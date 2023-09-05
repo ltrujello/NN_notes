@@ -140,39 +140,31 @@ hobby
   Below is a graphical representation of a such network. 
 
   \begin{center}
-  \begin{python}
-      import math
+  \begin{tikzpicture}
+    \draw[->] (0.23717082451262844, 3.9209430584957907) to (5.762829175487371, 2.0790569415042093);
+    \draw (0, 4) circle (0.25cm);
+    \node at (0, 4.45) { $x_0$ };
+    \node[above] at (1.8948683298050513, 3.368377223398316) { $w_0$ };
+    \draw[->] (0.24659848095803594, 2.9589002531736606) to (5.753401519041964, 2.0410997468263394);
+    \draw (0, 3) circle (0.25cm);
+    \node at (0, 3.45) { $x_1$ };
+    \node[above] at (1.8986393923832146, 2.683560101269464) { $w_1$ };
+    \draw[->] (0.25, 2.0) to (5.75, 2.0);
+    \draw (0, 2) circle (0.25cm);
+    \node at (0, 2.45) { $x_2$ };
+    \node[above] at (1.9, 2.0) { $w_2$ };
+    \draw[->] (0.24659848095803594, 1.0410997468263392) to (5.753401519041964, 1.9589002531736608);
+    \draw (0, 1) circle (0.25cm);
+    \node at (0, 1.45) { $x_3$ };
+    \node[above] at (1.8986393923832146, 1.3164398987305357) { $w_3$ };
+    \draw[->] (0.23717082451262844, 0.07905694150420949) to (5.762829175487371, 1.9209430584957905);
+    \draw (0, 0) circle (0.25cm);
+    \node at (0, 0.45) { $x_4$ };
+    \node[above] at (1.8948683298050513, 0.6316227766016838) { $w_4$ };
+    \draw (6, 2) circle (0.25cm);
+    \node at (6, 2.45) { $y$ };
+\end{tikzpicture}
 
-      radius = 0.25
-      x_2 = 6
-      y_2 = 2
-      epsilon = 0.2
-      for i in range(5):
-          x_1 = 0
-          y_1 = 4 - i
-          if y_1 - y_2 == 0:
-              theta = math.pi/2
-          else:
-              theta = math.atan(abs(x_2 - x_1) / abs(y_1 - y_2))
-          if y_2 > y_1:
-              start = (x_1 + radius * math.sin(theta), y_1 + radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 - radius * math.cos(theta))
-          else:
-              start = (x_1 + radius * math.sin(theta), y_1 - radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 + radius * math.cos(theta))
-
-          line = tikz.line(start, end, options="->")
-          tikz.circle((x_1, y_1), radius)
-          # Draw the input x_i
-          tikz.node((x_1, y_1 + radius + epsilon), text=f"$x_{i}$")
-          # Draw the weight w_i
-          tikz.node(line.pos_at_t(0.3), options="above", text=f"$w_{i}$")
-
-      # Draw the output node
-      tikz.circle((x_2, y_2), radius)
-      # Draw label for output node
-      tikz.node((x_2, y_2 + radius + epsilon), text="$y$")
-  \end{python}
   \end{center}
   In such a graphical representation, the set of $x_i$ nodes are called the \textbf{input layer} (or simply the first layer)
   and the $y$ node is called the \textbf{output layer}. In the above diagram, the output layer 
@@ -203,67 +195,47 @@ hobby
   choosing to suppress the $w_{ij}$ notation in the diagram below to not over complicate the figure.  
 
   \begin{center}
-    \begin{python}
-      import math 
+    \begin{tikzpicture}
+    \draw (0, 3.75) circle (0.25cm);
+    \node at (0, 4.3) { $x_1$ };
+    \draw (0, 2.5) circle (0.25cm);
+    \node at (0, 3.05) { $x_2$ };
+    \draw (0, 1.25) circle (0.25cm);
+    \node at (0, 1.8) { $x_3$ };
+    \draw (0, 0.0) circle (0.25cm);
+    \node at (0, 0.55) { $x_4$ };
+    \draw (3, 3.75) circle (0.25cm);
+    \node at (3, 4.3) { $h_1$ };
+    \draw (3, 2.5) circle (0.25cm);
+    \node at (3, 3.05) { $h_2$ };
+    \draw (3, 1.25) circle (0.25cm);
+    \node at (3, 1.8) { $h_3$ };
+    \draw (3, 0.0) circle (0.25cm);
+    \node at (3, 0.55) { $h_4$ };
+    \draw (6, 2) circle (0.25cm);
+    \node at (6, 2.55) { $y$ };
+    \draw[->] (0.25, 3.75) to (2.75, 3.75);
+    \draw[->] (0.23076923076923075, 3.6538461538461537) to (2.769230769230769, 2.5961538461538463);
+    \draw[->] (0.19205531989934396, 3.58995390008388) to (2.8079446801006562, 1.41004609991612);
+    \draw[->] (0.15617376188860607, 3.5547827976392425) to (2.843826238111394, 0.19521720236075757);
+    \draw[->] (0.23076923076923075, 2.5961538461538463) to (2.769230769230769, 3.6538461538461537);
+    \draw[->] (0.25, 2.5) to (2.75, 2.5);
+    \draw[->] (0.23076923076923075, 2.4038461538461537) to (2.769230769230769, 1.3461538461538463);
+    \draw[->] (0.19205531989934396, 2.33995390008388) to (2.8079446801006562, 0.16004609991611995);
+    \draw[->] (0.19205531989934396, 1.41004609991612) to (2.8079446801006562, 3.58995390008388);
+    \draw[->] (0.23076923076923075, 1.3461538461538463) to (2.769230769230769, 2.4038461538461537);
+    \draw[->] (0.25, 1.25) to (2.75, 1.25);
+    \draw[->] (0.23076923076923075, 1.1538461538461537) to (2.769230769230769, 0.09615384615384617);
+    \draw[->] (0.15617376188860607, 0.19521720236075757) to (2.843826238111394, 3.5547827976392425);
+    \draw[->] (0.19205531989934396, 0.16004609991611995) to (2.8079446801006562, 2.33995390008388);
+    \draw[->] (0.23076923076923075, 0.09615384615384617) to (2.769230769230769, 1.1538461538461537);
+    \draw[->] (0.25, -1.5308084989341915e-17) to (2.75, 1.5308084989341915e-17);
+    \draw[->] (3.2159447252246083, 3.6240322436189785) to (5.784055274775391, 2.1259677563810215);
+    \draw[->] (3.2465984809580357, 2.4589002531736606) to (5.753401519041964, 2.0410997468263394);
+    \draw[->] (3.242535625036333, 1.3106339062590833) to (5.757464374963667, 1.9393660937409167);
+    \draw[->] (3.208012573584461, 0.1386750490563073) to (5.791987426415539, 1.8613249509436927);
+\end{tikzpicture}
 
-      radius = 0.25
-      x_2 = 6
-      y_2 = 2
-      epsilon = 0.3
-
-      horiz_space = 3
-      vert_space = 1.25
-      def calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b):
-          x_1, y_1 = pos_a
-          x_2, y_2 = pos_b
-          if y_1 - y_2 == 0:
-              theta = math.pi/2
-          else:
-              theta = math.atan(abs(x_2 - x_1) / abs(y_1 - y_2))
-
-          if y_2 > y_1:
-              start = (x_1 + radius * math.sin(theta), y_1 + radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 - radius * math.cos(theta))
-          else:
-              start = (x_1 + radius * math.sin(theta), y_1 - radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 + radius * math.cos(theta))
-          return start, end
-
-      layers = []
-      num_nodes = 4
-      for layer in range(2):
-          layer_nodes = []
-          for i in range(num_nodes):
-              x_1 = layer * horiz_space
-              y_1 = (num_nodes - 1 - i) * vert_space
-
-              layer_node = tikz.circle((x_1, y_1), radius)
-              # Draw the input x_i or hidden layer
-              if layer == 0:
-                  tikz.node((x_1, y_1 + radius + epsilon), text=f"$x_{i + 1}$")
-              else:
-                  tikz.node((x_1, y_1 + radius + epsilon), text=f"$h_{i + 1}$")
-              layer_nodes.append(layer_node)
-          layers.append(layer_nodes)
-      # Add the final output layer
-      layer_node = tikz.circle((x_2, y_2), radius)
-      layers.append([layer_node])
-      # Draw label for output node
-      tikz.node((x_2, y_2 + radius + epsilon), text="$y$") 
-
-      for i in range(len(layers) - 1):
-          curr_nodes = layers[i]
-          next_nodes = layers[i + 1]
-
-          for node in curr_nodes:
-              pos_a = node.center
-              rad_a = node.radius
-              for next_node in next_nodes:
-                  pos_b = next_node.center
-                  rad_b = next_node.radius
-                  start, end = calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b)
-                  tikz.line(start, end, options="->")
-    \end{python}
   \end{center}
   The calculation of a hidden layer is simply 
   \[
@@ -317,84 +289,56 @@ hobby
   we'd obtain by adding bias to our previous network.
 
   \begin{center}
-    \begin{python}
-      import math 
+    \begin{tikzpicture}
+    \draw (0, 5.0) circle (0.25cm);
+    \node at (0, 5.55) { $x_1$ };
+    \draw (0, 3.75) circle (0.25cm);
+    \node at (0, 4.3) { $x_2$ };
+    \draw (0, 2.5) circle (0.25cm);
+    \node at (0, 3.05) { $x_3$ };
+    \draw (0, 1.25) circle (0.25cm);
+    \node at (0, 1.8) { $x_4$ };
+    \draw (0, 0.0) circle (0.25cm);
+    \node at (0, 0.55) { $1$ };
+    \draw (3, 5.0) circle (0.25cm);
+    \node at (3, 5.55) { $h_1$ };
+    \draw (3, 3.75) circle (0.25cm);
+    \node at (3, 4.3) { $h_2$ };
+    \draw (3, 2.5) circle (0.25cm);
+    \node at (3, 3.05) { $h_3$ };
+    \draw (3, 1.25) circle (0.25cm);
+    \node at (3, 1.8) { $h_4$ };
+    \draw (3, 0.0) circle (0.25cm);
+    \node at (3, 0.55) { $1$ };
+    \draw (6, 2.5) circle (0.25cm);
+    \node at (6, 3.05) { $y$ };
+    \draw[->, ] (0.25, 5.0) to (2.75, 5.0);
+    \draw[->, ] (0.23076923076923075, 4.903846153846154) to (2.769230769230769, 3.8461538461538463);
+    \draw[->, ] (0.19205531989934396, 4.83995390008388) to (2.8079446801006562, 2.66004609991612);
+    \draw[->, ] (0.15617376188860607, 4.804782797639242) to (2.843826238111394, 1.4452172023607575);
+    \draw[->, ] (0.23076923076923075, 3.8461538461538463) to (2.769230769230769, 4.903846153846154);
+    \draw[->, ] (0.25, 3.75) to (2.75, 3.75);
+    \draw[->, ] (0.23076923076923075, 3.6538461538461537) to (2.769230769230769, 2.5961538461538463);
+    \draw[->, ] (0.19205531989934396, 3.58995390008388) to (2.8079446801006562, 1.41004609991612);
+    \draw[->, ] (0.19205531989934396, 2.66004609991612) to (2.8079446801006562, 4.83995390008388);
+    \draw[->, ] (0.23076923076923075, 2.5961538461538463) to (2.769230769230769, 3.6538461538461537);
+    \draw[->, ] (0.25, 2.5) to (2.75, 2.5);
+    \draw[->, ] (0.23076923076923075, 2.4038461538461537) to (2.769230769230769, 1.3461538461538463);
+    \draw[->, ] (0.15617376188860607, 1.4452172023607575) to (2.843826238111394, 4.804782797639242);
+    \draw[->, ] (0.19205531989934396, 1.41004609991612) to (2.8079446801006562, 3.58995390008388);
+    \draw[->, ] (0.23076923076923075, 1.3461538461538463) to (2.769230769230769, 2.4038461538461537);
+    \draw[->, ] (0.25, 1.25) to (2.75, 1.25);
+    \draw[->, color=ProcessBlue, thick] (0.12862393885688164, 0.21437323142813605) to (2.8713760611431183, 4.785626768571864);
+    \draw[->, color=ProcessBlue, thick] (0.15617376188860607, 0.19521720236075757) to (2.843826238111394, 3.5547827976392425);
+    \draw[->, color=ProcessBlue, thick] (0.19205531989934396, 0.16004609991611995) to (2.8079446801006562, 2.33995390008388);
+    \draw[->, color=ProcessBlue, thick] (0.23076923076923075, 0.09615384615384617) to (2.769230769230769, 1.1538461538461537);
+    \draw[->, ] (3.1920553198993438, 4.83995390008388) to (5.807944680100656, 2.66004609991612);
+    \draw[->, ] (3.230769230769231, 3.6538461538461537) to (5.769230769230769, 2.5961538461538463);
+    \draw[->, ] (3.25, 2.5) to (5.75, 2.5);
+    \draw[->, ] (3.230769230769231, 1.3461538461538463) to (5.769230769230769, 2.4038461538461537);
+    \draw[->, color=Orange, thick] (3.1920553198993438, 0.16004609991611995) to (5.807944680100656, 2.33995390008388);
+\end{tikzpicture}
 
-      radius = 0.25
-      epsilon = 0.3
-      num_nodes_per_layer = 5
-      horiz_space = 3
-      vert_space = 1.25
-      x_2 = 6
-      y_2 = (num_nodes_per_layer - 1)* vert_space / 2
-      layers = []
-
-      def calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b):
-          x_1, y_1 = pos_a
-          x_2, y_2 = pos_b
-          if y_1 - y_2 == 0:
-              theta = math.pi/2
-          else:
-              theta = math.atan(abs(x_2 - x_1) / abs(y_1 - y_2))
-
-          if y_2 > y_1:
-              start = (x_1 + radius * math.sin(theta), y_1 + radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 - radius * math.cos(theta))
-          else:
-              start = (x_1 + radius * math.sin(theta), y_1 - radius* math.cos(theta))
-              end = (x_2 - radius * math.sin(theta), y_2 + radius * math.cos(theta))
-          return start, end
-
-
-      for layer in range(2):
-          layer_nodes = []
-          for i in range(num_nodes_per_layer):
-              x_1 = layer * horiz_space
-              y_1 = (num_nodes_per_layer -1 - i) * vert_space
-
-              if i == 4:
-                  if layer == 1:
-                      layer_node = tikz.circle((x_1, y_1), radius, options="")
-                      tikz.node((x_1, y_1 + radius + epsilon), text=f"$1$")
-                  else:
-                      layer_node = tikz.circle((x_1, y_1), radius, options="")
-                      tikz.node((x_1, y_1 + radius + epsilon), text=f"$1$")
-              else:
-                  layer_node = tikz.circle((x_1, y_1), radius)
-                  # Draw the input x_i or hidden layer
-                  if layer == 0:
-                      tikz.node((x_1, y_1 + radius + epsilon), text=f"$x_{i+1}$")
-                  else:
-                      tikz.node((x_1, y_1 + radius + epsilon), text=f"$h_{i+1}$")
-              layer_nodes.append(layer_node)
-          layers.append(layer_nodes)
-      # Add the final output layer
-      layer_node = tikz.circle((x_2, y_2), radius)
-      layers.append([layer_node])
-      # Draw label for output node
-      tikz.node((x_2, y_2 + radius + epsilon), text="$y$")
-
-      for i in range(len(layers) - 1):
-          curr_nodes = layers[i]
-          next_nodes = layers[i + 1]
-
-          for ind, node in enumerate(curr_nodes):
-              pos_a = node.center
-              rad_a = node.radius
-              if i == 0 and ind == len(curr_nodes) - 1:
-                  color="color=ProcessBlue, thick"
-              elif i == 1 and ind == len(curr_nodes) - 1:
-                  color="color=Orange, thick"
-              else:
-                  color=""
-              for j, next_node in enumerate(next_nodes):
-                  if i == 0 and j == len(next_nodes) - 1:
-                      continue
-                  pos_b = next_node.center
-                  rad_b = next_node.radius
-                  start, end = calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b)
-                  tikz.line(start, end, options=f"->, {color}")
-    \end{python}
   \end{center}
   With this neural network architecture, we have the following weight matrices:
   \[
@@ -449,35 +393,20 @@ hobby
   \]
   and the graph of the sigmoid function is given below.
   \begin{center}
-    \begin{python}
-    import numpy as np
-    from tikzpy import TikzPicture, R2_Space
-    import math
+    \begin{tikzpicture}
+    \begin{scope}
+	\draw[Gray!30, ->] (-4, 0) to (4, 0);
+	\draw[Gray!30, ->] (0, 0) to (0, 5.0);
+	\node[below] at (4, 0) { $x$ };
+	\node[left] at (0, 5.0) { $y$ };
+\end{scope}
 
-    xrange = (-3, 3)
-    vert_scale = 4.5
-    horiz_scale = 1.5
+    \draw[dashed] (-3.5, 4.5) to (4.5, 4.5);
+    \draw[fill] (0, 4.5) circle (0.01cm);
+    \node[left] at (-3.5, 4.5) { $y=1$ };
+    \draw[ProcessBlue] plot coordinates {(-4.5, 0.005262796192749818) (-4.454773869346734, 0.005631746396210898) (-4.409547738693467, 0.006026527305014147) (-4.364321608040201, 0.006448942330119109) (-4.319095477386934, 0.006900920060491525) (-4.273869346733669, 0.0073845228460029805) (-4.228643216080402, 0.007901955953416093) (-4.183417085427136, 0.008455577331464884) (-4.138190954773869, 0.009047908022967094) (-4.092964824120603, 0.009681643263881561) (-4.047738693467337, 0.01035966431124376) (-4.00251256281407, 0.011085051043962974) (-3.9572864321608043, 0.011861095382535868) (-3.9120603015075375, 0.01269131557580394) (-3.866834170854271, 0.013579471404940771) (-3.821608040201005, 0.014529580356873897) (-3.776381909547739, 0.015545934821298967) (-3.7311557788944727, 0.01663312036729784) (-3.685929648241206, 0.017796035157289784) (-3.64070351758794, 0.019039910557579216) (-3.5954773869346734, 0.020370333006064664) (-3.550251256281407, 0.02179326719867715) (-3.505025125628141, 0.02331508065675532) (-3.459798994974874, 0.024942569737754265) (-3.414572864321608, 0.026682987151332882) (-3.369346733668342, 0.0285440710418642) (-3.324120603015076, 0.030534075696637793) (-3.2788944723618094, 0.032661803936339655) (-3.2336683417085426, 0.03493664124063683) (-3.1884422110552766, 0.037368591656690056) (-3.14321608040201, 0.03996831553195919) (-3.0979899497487438, 0.04274716910453138) (-3.052763819095478, 0.0457172459741365) (-3.007537688442211, 0.04889142046473615) (-2.9623115577889445, 0.05228339287476804) (-2.9170854271356785, 0.05590773659345733) (-2.871859296482412, 0.059779947040685594) (-2.8266331658291457, 0.06391649236333043) (-2.7814070351758797, 0.06833486579230547) (-2.7361809045226133, 0.07305363953125817) (-2.690954773869347, 0.07809252000951472) (-2.6457286432160805, 0.0834724042878502) (-2.600502512562814, 0.08921543735544614) (-2.555276381909548, 0.09534506999939227) (-2.5100502512562812, 0.10188611686370903) (-2.4648241206030153, 0.10886481424252653) (-2.419597989949749, 0.11630887707120185) (-2.3743718592964824, 0.12424755448927133) (-2.329145728643216, 0.13271168324978544) (-2.28391959798995, 0.1417337381404277) (-2.2386934673366836, 0.15134787846268502) (-2.193467336683417, 0.16158998948623748) (-2.148241206030151, 0.1724977176569227) (-2.1030150753768844, 0.18411049818868822) (-2.057788944723618, 0.19646957351385033) (-2.012562814070352, 0.20961800090317478) (-1.9673366834170856, 0.2236006473998081) (-1.9221105527638191, 0.23846417004160023) (-1.8768844221105527, 0.2542569791783549) (-1.8316582914572865, 0.2710291825283369) (-1.7864321608040203, 0.2888325074673447) (-1.741206030150754, 0.30772019891019453) (-1.6959798994974875, 0.32774689003619695) (-1.650753768844221, 0.3489684430359182) (-1.605527638190955, 0.37144175702627613) (-1.5603015075376887, 0.39522454030606535) (-1.5150753768844223, 0.420375044216673) (-1.4698492462311556, 0.4469517560462967) (-1.4246231155778895, 0.4750130486842121) (-1.3793969849246233, 0.5046167851086218) (-1.334170854271357, 0.5358198762909183) (-1.2889447236180909, 0.5686777917334077) (-1.243718592964824, 0.603244022637125) (-1.1984924623115578, 0.6395694986289344) (-1.1532663316582916, 0.677701960065948) (-1.1080402010050254, 0.717685289178302) (-1.0628140703517592, 0.7595588046996393) (-1.0175879396984924, 0.803356526151213) (-0.9723618090452262, 0.8491064155640977) (-0.92713567839196, 0.8968296061080361) (-0.8819095477386938, 0.946539628797629) (-0.8366834170854276, 0.9982416501087256) (-0.7914572864321607, 1.0519317348915715) (-0.7462311557788945, 1.1075961503353762) (-0.7010050251256283, 1.1652107278379473) (-0.6557788944723622, 1.224740300377231) (-0.610552763819096, 1.2861382332838076) (-0.5653266331658291, 1.3493460660955867) (-0.5201005025125629, 1.414293282371383) (-0.4748743718592967, 1.4808972229002506) (-0.4296482412060305, 1.549063155643788) (-0.3844221105527643, 1.618684512994169) (-0.33919597989949746, 1.6896433035594725) (-0.29396984924623126, 1.7618107017739604) (-0.24874371859296507, 1.835047814283836) (-0.20351758793969887, 1.9092066174213018) (-0.158291457286432, 1.9841310553222182) (-0.11306532663316582, 2.0596582835558777) (-0.06783919597989962, 2.135620038720231) (-0.02261306532663343, 2.2118441105114752) (0.022613065326632764, 2.288155889488524) (0.06783919597989962, 2.364379961279769) (0.11306532663316582, 2.4403417164441223) (0.158291457286432, 2.515868944677782) (0.2035175879396982, 2.5907933825786973) (0.2487437185929644, 2.6649521857161633) (0.29396984924623126, 2.738189298226039) (0.33919597989949746, 2.8103566964405275) (0.38442211055276365, 2.88131548700583) (0.42964824120602985, 2.9509368443562107) (0.47487437185929604, 3.0191027770997483) (0.5201005025125629, 3.085706717628617) (0.5653266331658291, 3.1506539339044135) (0.6105527638190953, 3.2138617667161915) (0.6557788944723615, 3.275259699622768) (0.7010050251256277, 3.334789272162052) (0.7462311557788945, 3.3924038496646243) (0.7914572864321607, 3.4480682651084287) (0.8366834170854269, 3.5017583498912734) (0.8819095477386931, 3.5534603712023705) (0.9271356783919593, 3.603170393891963) (0.9723618090452262, 3.6508935844359023) (1.0175879396984924, 3.6966434738487868) (1.0628140703517586, 3.74044119530036) (1.1080402010050248, 3.782314710821697) (1.153266331658291, 3.822298039934051) (1.1984924623115578, 3.860430501371066) (1.243718592964824, 3.8967559773628744) (1.2889447236180902, 3.931322208266592) (1.3341708542713564, 3.964180123709081) (1.3793969849246226, 3.9953832148913775) (1.4246231155778895, 4.024986951315788) (1.4698492462311556, 4.053048243953704) (1.5150753768844218, 4.079624955783327) (1.5603015075376887, 4.1047754596939345) (1.6055276381909542, 4.128558242973723) (1.650753768844221, 4.1510315569640825) (1.6959798994974866, 4.172253109963803) (1.7412060301507535, 4.192279801089805) (1.7864321608040203, 4.211167492532655) (1.8316582914572859, 4.228970817471663) (1.8768844221105527, 4.245743020821645) (1.9221105527638183, 4.261535829958399) (1.9673366834170851, 4.276399352600191) (2.012562814070352, 4.290381999096825) (2.0577889447236175, 4.30353042648615) (2.1030150753768844, 4.315889501811312) (2.14824120603015, 4.327502282343077) (2.1934673366834168, 4.338410010513762) (2.2386934673366836, 4.348652121537315) (2.283919597989949, 4.358266261859572) (2.329145728643216, 4.367288316750215) (2.3743718592964815, 4.375752445510728) (2.4195979899497484, 4.3836911229287985) (2.4648241206030153, 4.391135185757473) (2.510050251256281, 4.398113883136291) (2.5552763819095476, 4.404654930000608) (2.600502512562813, 4.410784562644554) (2.64572864321608, 4.41652759571215) (2.690954773869347, 4.421907479990486) (2.7361809045226124, 4.426946360468742) (2.7814070351758793, 4.4316651342076945) (2.826633165829145, 4.4360835076366705) (2.8718592964824117, 4.440220052959314) (2.9170854271356785, 4.444092263406542) (2.962311557788944, 4.447716607125232) (3.007537688442211, 4.451108579535264) (3.0527638190954764, 4.454282754025863) (3.0979899497487433, 4.457252830895468) (3.14321608040201, 4.46003168446804) (3.1884422110552757, 4.462631408343309) (3.2336683417085426, 4.465063358759363) (3.278894472361808, 4.46733819606366) (3.324120603015075, 4.469465924303362) (3.369346733668342, 4.471455928958136) (3.4145728643216073, 4.473317012848668) (3.459798994974874, 4.475057430262245) (3.5050251256281397, 4.476684919343245) (3.5502512562814066, 4.478206732801323) (3.5954773869346734, 4.479629666993935) (3.640703517587939, 4.480960089442421) (3.685929648241206, 4.48220396484271) (3.7311557788944714, 4.483366879632702) (3.7763819095477382, 4.484454065178701) (3.821608040201005, 4.485470419643126) (3.8668341708542706, 4.486420528595058) (3.9120603015075375, 4.487308684424196) (3.957286432160803, 4.488138904617464) (4.00251256281407, 4.488914948956037) (4.047738693467337, 4.4896403356887555) (4.092964824120602, 4.490318356736118) (4.138190954773869, 4.490952091977033) (4.183417085427136, 4.491544422668535) (4.2286432160804015, 4.492098044046584) (4.273869346733669, 4.492615477153997) (4.319095477386934, 4.493099079939508) (4.364321608040201, 4.493551057669881) (4.409547738693467, 4.493973472694987) (4.454773869346733, 4.494368253603789) (4.5, 4.49473720380725) };
+\end{tikzpicture}
 
-    # Set up xy-plane
-    xy_plane = R2_Space(x_interval=(-4, 4), y_interval=(0, vert_scale + .5))
-    xy_plane.x_axis_options = "Gray!30, ->"
-    xy_plane.y_axis_options = "Gray!30, ->"
-    tikz.draw(xy_plane)
-
-    def sigmoid(val):
-        val = horiz_scale * val
-        return 1/(1 + math.pow(math.e, -val))
-
-    # Collect (x,y) cantor data
-    x = horiz_scale * np.linspace(xrange[0], xrange[1], 200)
-    y = [vert_scale*sigmoid(val) for val in x]
-
-    line = tikz.line((-3.5, 4.5), (4.5, 4.5), options="dashed")
-    circle = tikz.circle((0, 4.5), 0.01, options="fill")
-    tikz.node(line.start, options="left", text="$y=1$")
-    # Plot it
-    points = tikz.plot_coordinates(list(zip(x, y)), options="ProcessBlue")
-    \end{python}
   \end{center}
 
   Finally, ReLU itself is given by 
@@ -491,27 +420,20 @@ hobby
   Below we have ReLU, which we will use in our examples as it generally results in better 
   training performance.
   \begin{center}
-    \begin{python}
-      import numpy as np
-      from tikzpy import TikzPicture, R2_Space
-      import math
+    \begin{tikzpicture}
+    \begin{scope}
+	\draw[Gray!30, ->] (-4, 0) to (4, 0);
+	\draw[Gray!30, ->] (0, 0) to (0, 5.0);
+	\node[below] at (4, 0) { $x$ };
+	\node[left] at (0, 5.0) { $y$ };
+\end{scope}
 
-      xrange = (-3, 3)
-      vert_scale = 4.5
-      horiz_scale = 1.5
+    \draw[dashed] (-3.5, 4.5) to (4.5, 4.5);
+    \node[left] at (-3.5, 4.5) { $y=1$ };
+    \draw[ProcessBlue, <-] (-4, 0) to (0, 0);
+    \draw[ProcessBlue, ->] (0, 0) to (4.5, 4.5);
+\end{tikzpicture}
 
-      # Set up xy-plane
-      xy_plane = R2_Space(x_interval=(-4, 4), y_interval=(0, vert_scale + .5))
-      xy_plane.x_axis_options = "Gray!30, ->"
-      xy_plane.y_axis_options = "Gray!30, ->"
-      tikz.draw(xy_plane)
-
-      line = tikz.line((-3.5, 4.5), (4.5, 4.5), options="dashed")
-      tikz.node(line.start, options="left", text="$y=1$")
-      # Plot it
-      tikz.line((-4, 0), (0, 0), options="ProcessBlue, <-")
-      tikz.line((0, 0), (4.5, 4.5), options="ProcessBlue, ->")
-    \end{python}
   \end{center}
 
   Using our previous network, we can add nonlinearity by defining the computation of a hidden unit to be 
@@ -545,93 +467,41 @@ hobby
   Below is our proposed network. We'll use ReLU, denoted as $r(x)$, 
   for the activation function on our nodes. 
   \begin{center}
-    \begin{python}
-    import math
-    from tikzpy import TikzPicture
+    \begin{tikzpicture}
+    \draw (0, 2.5) circle (0.25cm);
+    \node at (0, 3.05) { $x_1$ };
+    \draw (0, 0) circle (0.25cm);
+    \node at (0, 0.55) { $x_2$ };
+    \draw (0, -2.5) circle (0.25cm);
+    \node at (0, -1.95) { $1$ };
+    \draw (3, 2.5) circle (0.25cm);
+    \node at (3, 3.05) { $h_1$ };
+    \draw (3, 0) circle (0.25cm);
+    \node at (3, 0.55) { $h_2$ };
+    \draw (3, -2.5) circle (0.25cm);
+    \node at (3, -1.95) { $1$ };
+    \draw (5.25, 0) circle (0.25cm);
+    \node at (5.25, 0.55) { $y$ };
+    \draw[->] (0.25, 2.5) to (2.75, 2.5);
+    \draw[->] (0.19205531989934396, 2.33995390008388) to (2.8079446801006562, 0.16004609991611995);
+    \draw[->] (0.19205531989934396, 0.16004609991611995) to (2.8079446801006562, 2.33995390008388);
+    \draw[->] (0.25, -1.5308084989341915e-17) to (2.75, 1.5308084989341915e-17);
+    \draw[->] (0.12862393885688164, -2.285626768571864) to (2.8713760611431183, 2.285626768571864);
+    \draw[->] (0.19205531989934396, -2.33995390008388) to (2.8079446801006562, -0.16004609991611995);
+    \draw[->] (3.1672411829056126, 2.3141764634382085) to (5.082758817094388, 0.18582353656179157);
+    \draw[->] (3.25, -1.5308084989341915e-17) to (5.0, 1.5308084989341915e-17);
+    \draw[->] (3.1672411829056126, -2.3141764634382085) to (5.082758817094388, -0.18582353656179157);
+    \node[above] at (1.5, 2.5) { 3 };
+    \node[above] at (0.7152331919396064, 1.903972340050328) { 4 };
+    \node[above] at (0.7152331919396064, 0.5960276599496719) { 2 };
+    \node[above] at (1.0, -6.1232339957367656e-18) { 3 };
+    \node[left] at (0.677174363314129, -1.3713760611431185) { 2 };
+    \node[below] at (1.5, -1.25) { 4 };
+    \node[right] at (3.933448236581123, 1.4628352926876418) { 5 };
+    \node[above] at (4.125, 0.0) { 5 };
+    \node[left] at (4.125, -1.25) { 2 };
+\end{tikzpicture}
 
-    def calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b):
-        x_1, y_1 = pos_a
-        x_2, y_2 = pos_b
-        if y_1 - y_2 == 0:
-            theta = math.pi/2
-        else:
-            theta = math.atan(abs(x_2 - x_1) / abs(y_1 - y_2))
-
-        if y_2 > y_1:
-            start = (x_1 + radius * math.sin(theta), y_1 + radius* math.cos(theta))
-            end = (x_2 - radius * math.sin(theta), y_2 - radius * math.cos(theta))
-        else:
-            start = (x_1 + radius * math.sin(theta), y_1 - radius* math.cos(theta))
-            end = (x_2 - radius * math.sin(theta), y_2 + radius * math.cos(theta))
-        return start, end
-
-    layers = []
-    horiz_space = 3
-    vert_space = 2.5
-    radius=0.25
-    epsilon = 0.3
-
-    # x_0 node
-    x_0_node = tikz.circle((0, vert_space), radius)
-    tikz.node((0, vert_space + radius + epsilon), text="$x_1$")
-    # x_2 node
-    x_1_node = tikz.circle((0, 0), radius)
-    tikz.node((0, 0 + radius + epsilon), text="$x_2$")
-    # x_2 node
-    x_2_node = tikz.circle((0, -vert_space), radius)
-    tikz.node(x_2_node.center + (0, radius + epsilon), text="$1$")
-
-    # h_0 node
-    h_0_node = tikz.circle((horiz_space, vert_space), radius)
-    tikz.node((horiz_space, vert_space + radius + epsilon), text="$h_1$")
-    # h_1 node
-    h_1_node = tikz.circle((horiz_space, 0), radius)
-    tikz.node((horiz_space, 0 + radius + epsilon), text="$h_2$")
-    # h_2 node
-    h_2_node = tikz.circle((horiz_space, -vert_space), radius)
-    tikz.node((horiz_space, -vert_space + radius + epsilon), text="$1$")
-
-    # Add the final output layer
-    x_2 = 1.75*horiz_space
-    y_2 = 0
-
-    output_node = tikz.circle((x_2, y_2), radius)
-    tikz.node((x_2, y_2 + radius + epsilon), text="$y$")
-
-    layers = [[x_0_node, x_1_node, x_2_node], [h_0_node, h_1_node, h_2_node], [output_node]]
-
-    # Draw labels for hidden layer
-    lines = []
-    for i in range(len(layers) - 1):
-        curr_nodes = layers[i]
-        next_nodes = layers[i + 1]
-
-        for ind, node in enumerate(curr_nodes):
-            pos_a = node.center
-            rad_a = node.radius
-            for j, next_node in enumerate(next_nodes):
-                if i == 0 and j == len(next_nodes) - 1:
-                    continue
-                pos_b = next_node.center
-                rad_b = next_node.radius
-                start, end = calc_start_end_between_nodes(pos_a, rad_a, pos_b, rad_b)
-                lines.append(tikz.line(start, end, options="->"))
-
-    # label the weights in the hidden layer
-    tikz.node(lines[0].pos_at_t(0.5), options="above", text="3")
-    tikz.node(lines[1].pos_at_t(0.2), options="above", text="4")
-    tikz.node(lines[2].pos_at_t(0.2), options="above", text="2")
-    tikz.node(lines[3].pos_at_t(0.3), options="above", text="3")
-    # label the biases in the first layer
-    tikz.node(lines[4].pos_at_t(0.2), options="left", text="2")
-    tikz.node(lines[5].pos_at_t(0.5), options="below", text="4")
-
-    # label the weights in the final layer
-    tikz.node(lines[6].pos_at_t(0.4), options="right", text="5")
-    tikz.node(lines[7].pos_at_t(0.5), options="above", text="5")
-    # label the bias in the final layer
-    tikz.node(lines[8].pos_at_t(0.5), options="left", text="2")
-    \end{python}
   \end{center}
   Note that we have a bias inbetween each layer. The first one has weights 2 and -4, and the second one 
   has weight -2. Thus for this network, the weight matrices are defined to be 
@@ -879,30 +749,19 @@ hobby
     of this specific part of the neural network.
 
     \begin{center}
-      \begin{python}
-          import math
+      \begin{tikzpicture}
+    \draw (0, 0) circle (0.25cm);
+    \draw (4, 1) circle (0.25cm);
+    \draw[->] (0.24253562503633297, 0.06063390625908324) to (3.757464374963667, 0.9393660937409167);
+    \node at (0.3, 0.75) { $h_j^{(n-1)}$ };
+    \node at (4.3, 1.75) { $h_i^{(n-1)}$ };
+    \node at (2.0, 1.0) { $w_{ij}^{(n)}$ };
+    \node at (0, 1.5) { \vdots };
+    \node at (0, -0.75) { \vdots };
+    \node at (4, 2.5) { \vdots };
+    \node at (4, 0.25) { \vdots };
+\end{tikzpicture}
 
-          radius = 0.25
-          x_1, y_1 = 0, 0
-          x_2, y_2 = 4, 1
-
-          node_a = tikz.circle((x_1, y_1), radius)
-          node_b = tikz.circle((x_2, y_2), radius)
-
-          theta = math.atan((y_2 - y_1) / (x_2 - x_1))
-          start = node_a.point_at_arg(theta, radians=True)
-          end = node_b.point_at_arg(theta + math.pi, radians=True)
-
-          line = tikz.line(start, end, options="->")
-          h_j = tikz.node(node_a.center + (0.3, 0.75), text="$h_j^{(n-1)}$")
-          h_i = tikz.node(node_b.center + (0.3, 0.75), text="$h_i^{(n-1)}$")
-          w_ij = tikz.node(line.pos_at_t(0.5) + (0, 0.5), text="$w_{ij}^{(n)}$")
-
-          tikz.node(node_a.center + (0, 1.5), text="\\vdots")
-          tikz.node(node_a.center + (0, -0.75), text="\\vdots")
-          tikz.node(node_b.center + (0, 1.5), text="\\vdots")
-          tikz.node(node_b.center + (0, -0.75), text="\\vdots")
-      \end{python}
     \end{center}
     With this notation, we can calculate the value of a hidden node as below:
     \[

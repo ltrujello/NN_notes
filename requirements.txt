@@ -1,0 +1,12 @@
+black==23.7.0
+click==8.1.6
+iniconfig==2.0.0
+mypy-extensions==1.0.0
+numpy==1.25.1
+packaging==23.1
+pathspec==0.11.1
+platformdirs==3.9.1
+pluggy==1.2.0
+pytest==7.4.0
+ruff==0.0.280
+-e git+ssh://git@github.com/ltrujello/Tikz-Python.git@988b9be505cacd721989e56047cf8a00f28e7b48#egg=tikzpy

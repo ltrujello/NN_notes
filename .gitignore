@@ -4,6 +4,8 @@
 # Mac
 *.DS_Store
 
+env
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
